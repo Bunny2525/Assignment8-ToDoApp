@@ -1,0 +1,22 @@
+{
+  "name": "assignment8-backend",
+  "version": "1.0.0",
+  "description": "Backend for Assignment 8 To-Do List App",
+  "main": "Backend/server.js",
+  "scripts": {
+    "start": "node Backend/server.js",
+    "dev": "nodemon Backend/server.js"
+  },
+  "author": "Soumy",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongodb": "^7.2.0",
+    "mongoose": "^7.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
