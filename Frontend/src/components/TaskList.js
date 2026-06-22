@@ -1,38 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import { getTasks, deleteTask, completeTask } from '../api';
+import api from '../api';
 
 const TaskList = ({ refresh }) => {
   const [tasks, setTasks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
-    loadTasks();
+    const fetchTasks = async () => {
+      try {
+        setIsLoading(true);
+        setFetchError(null);
+        
+        const res = await api.get('/');
+        setTasks(res.data);
+      } catch (err) {
+        setFetchError(err.response?.data?.message || 'Failed to fetch tasks.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchTasks();
   }, [refresh]);
 
-  const loadTasks = async () => {
-    const res = await getTasks();
-    setTasks(res.data);
-  };
-
-  const handleDelete = async (id) => {
-    await deleteTask(id);
-    setTasks(tasks.filter(task => task._id !== id));
-  };
-
-  const handleComplete = async (id) => {
-    await completeTask(id);
-    setTasks(tasks.map(task => task._id === id ? { ...task, completed: true } : task));
-  };
+  if (isLoading) return <p className="loading-text">Loading tasks...</p>;
+  if (fetchError) return <p className="error-banner">{fetchError}</p>;
 
   return (
-    <div>
-      <h2>Tasks</h2>
-      {tasks.map(task => (
-        <div key={task._id}>
-          <span>{task.title} - {task.completed ? "✅" : "❌"}</span>
-          <button onClick={() => handleDelete(task._id)}>Delete</button>
-          <button onClick={() => handleComplete(task._id)}>Complete</button>
-        </div>
-      ))}
+    <div className="task-list-container">
+      <h2>Your Tasks</h2>
+      {tasks.length === 0 ? (
+        <p className="empty-state">No tasks found.</p>
+      ) : (
+        <ul className="task-list">
+          {tasks.map(task => (
+            <li key={task._id} className={`task-item priority-${task.priority.toLowerCase()}`}>
+              <div className="task-header">
+                <strong>{task.title}</strong>
+                <span className={`badge badge-${task.priority.toLowerCase()}`}>{task.priority}</span>
+              </div>
+              {task.description && <p className="task-desc">{task.description}</p>}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };

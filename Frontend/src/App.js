@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import TaskForm from './components/TaskForm';
 import TaskList from './components/TaskList';
+import './styles.css';
 
 function App() {
-  const [refresh, setRefresh] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
 
-  const handleTaskAdded = () => setRefresh(!refresh);
+  const handleTaskAdded = () => {
+    setRefreshTrigger(!refreshTrigger);
+  };
 
   return (
-    <div>
+    <div className="container">
       <h1>To-Do List App</h1>
       <TaskForm onTaskAdded={handleTaskAdded} />
-      <TaskList refresh={refresh} />
+      <TaskList refresh={refreshTrigger} />
     </div>
   );
 }

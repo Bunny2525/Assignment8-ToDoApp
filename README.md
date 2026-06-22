@@ -43,5 +43,5 @@ This assignment demonstrates a full‑stack application with separate backend an
 - Ensured authentic documentation and professional file structure.
 
 ## Deployment Links
-Netlify link:
-Github Link:
+Netlify link:https://implementall.netlify.app/
+Github Link:https://github.com/Bunny2525/Assignment8-ToDoApp.git
