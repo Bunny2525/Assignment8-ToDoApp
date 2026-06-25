@@ -4,8 +4,8 @@
   "description": "Backend for Assignment 8 To-Do List App",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server.js"
+    "start": "react-scripts start",
+    "build": "react-scripts build"
   },
   "author": "Soumy",
   "license": "MIT",
