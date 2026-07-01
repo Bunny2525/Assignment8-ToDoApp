@@ -1,19 +1,13 @@
+// Custom middleware to catch any server errors and send a clean JSON response
 const errorHandler = (err, req, res, next) => {
-  let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
-  let message = err.message || 'Server Error';
+    // Log the error to the terminal so I can debug it locally
+    console.log("Server Error:", err.stack);
 
-  if (err.name === 'ValidationError') {
-    statusCode = 400;
-    message = Object.values(err.errors).map(val => val.message).join(', ');
-  } else if (err.name === 'CastError' && err.kind === 'ObjectId') {
-    statusCode = 404;
-    message = 'Resource not found.';
-  }
-
-  res.status(statusCode).json({
-    message: message,
-    stack: process.env.NODE_ENV === 'production' ? null : err.stack
-  });
+    // Send a 500 Internal Server Error back to the frontend
+    res.status(500).json({
+        success: false,
+        message: err.message || "Something went wrong on the server"
+    });
 };
 
 module.exports = errorHandler;

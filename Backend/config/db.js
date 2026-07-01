@@ -1,18 +1,15 @@
 const mongoose = require('mongoose');
 
+// Connecting to my MongoDB Atlas database using the URI from the .env file
 const connectDB = async () => {
-  try {
-    console.log('MONGO_URI value:', process.env.MONGO_URI);
-    await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
-    console.log('MongoDB connected');
-  } catch (error) {
-    console.error('DB connection failed:', error.message);
-    process.exit(1);
-  }
+    try {
+        const conn = await mongoose.connect(process.env.MONGO_URI);
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+        console.log("Database connection failed:", error.message);
+        // Stop the server completely if the database doesn't connect
+        process.exit(1); 
+    }
 };
 
 module.exports = connectDB;
-console.log('MONGO_URI value:', process.env.MONGO_URI);
